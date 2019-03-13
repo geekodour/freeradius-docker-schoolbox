@@ -1,0 +1,104 @@
+server inner-tunnel {
+
+listen {
+       ipaddr = 127.0.0.1
+       port = 18120
+       type = auth
+}
+
+
+#  Authorization. First preprocess (hints and huntgroups files),
+#  then realms, and finally look in the "users" file.
+authorize {
+
+	filter_username
+	chap
+	mschap
+	suffix
+	update control {
+		&Proxy-To-Realm := LOCAL
+	}
+	eap {
+		ok = return
+	}
+	#  Read the 'users' file
+	files
+	#  Look in an SQL database.  The schema of the database
+	#  is meant to mirror the "users" file.
+	#  See "Authorization Queries" in sql.conf
+	sql
+	#  The ldap module reads passwords from the LDAP database.
+	-ldap
+	expiration
+	logintime
+	pap
+}
+
+
+#  Authentication.
+authenticate {
+	Auth-Type PAP {
+		pap
+	}
+	Auth-Type CHAP {
+		chap
+	}
+	Auth-Type MS-CHAP {
+		mschap
+	}
+	mschap
+	eap
+}
+
+#  Session database, used for checking Simultaneous-Use.
+session {
+	radutmp
+	sql
+}
+
+
+post-auth {
+
+	sql
+
+	#  Instead of "use_tunneled_reply", change this "if (0)" to an
+	#  "if (1)".
+	#
+	if (0) {
+		update reply {
+			User-Name !* ANY
+			Message-Authenticator !* ANY
+			EAP-Message !* ANY
+			Proxy-State !* ANY
+			MS-MPPE-Encryption-Types !* ANY
+			MS-MPPE-Encryption-Policy !* ANY
+			MS-MPPE-Send-Key !* ANY
+			MS-MPPE-Recv-Key !* ANY
+		}
+
+		update {
+			&outer.session-state: += &reply:
+		}
+	}
+
+	#
+	#  Access-Reject packets are sent through the REJECT sub-section of the
+	#  post-auth section.
+	Post-Auth-Type REJECT {
+		-sql
+		attr_filter.access_reject
+
+		update outer.session-state {
+			&Module-Failure-Message := &request:Module-Failure-Message
+		}
+	}
+}
+
+pre-proxy {
+}
+
+post-proxy {
+	eap
+}
+
+} # inner-tunnel server block
