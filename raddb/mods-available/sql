@@ -21,13 +21,13 @@ sql {
 
 	# Connection info:
 	#
-    server = "localhost"
+    server = "mysql-sb"
     port = 3306
 	login = "radius"
-	password = "radpassword"
+	password = "password"
 
 	# Database table configuration for everything except Oracle
-	radius_db = "students"
+	radius_db = "radius"
 
 	acct_table1 = "radacct"
 	acct_table2 = "radacct"
