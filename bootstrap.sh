@@ -12,4 +12,4 @@ trap 'true' SIGTERM
 trap 'true' SIGHUP
 
 echo "Starting Freeradius"
-exec freeradius
+freeradius -X
