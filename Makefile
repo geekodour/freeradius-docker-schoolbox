@@ -40,5 +40,8 @@ stop:
 delete:
 	@docker container rm $(IMGNAME)_run
 
-burn:
-	@docker container rm $(docker ps -aq)
+deleteall:
+	@docker container rm $(shell docker ps -aq)
+
+stopall:
+	@docker stop $(shell docker ps -aq)
