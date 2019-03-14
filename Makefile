@@ -26,6 +26,7 @@ run:
     --name $(IMGNAME)_run \
 	--net $(NETWORK) \
     -p 1812-1813:1812-1813/udp \
+    -e MYSQL_SERVER=$(MYSQL_SERVER) \
 	$(IMGNAME):$(IMGTAG)
 
 debug:
@@ -33,6 +34,7 @@ debug:
     --name $(IMGNAME)_run \
 	--net $(NETWORK) \
     -p 1812-1813:1812-1813/udp \
+    -e MYSQL_SERVER=$(MYSQL_SERVER) \
 	$(IMGNAME):$(IMGTAG) -X
 
 start:
