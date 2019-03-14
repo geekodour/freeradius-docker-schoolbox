@@ -11,5 +11,5 @@ trap 'true' SIGINT
 trap 'true' SIGTERM
 trap 'true' SIGHUP
 
-echo "Starting Freeradius
-exec radiusd
+echo "Starting Freeradius"
+exec freeradius

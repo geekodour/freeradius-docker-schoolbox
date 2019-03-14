@@ -22,20 +22,20 @@ build:
     --build-arg database=$(MYSQL_DATABASE) .
 
 run:
-	docker run -t -d\
+	docker run -t \
     --name $(IMGNAME)_run \
 	--net $(NETWORK) \
     -p 1812-1813:1812-1813/udp \
     -e MYSQL_SERVER=$(MYSQL_SERVER) \
 	$(IMGNAME):$(IMGTAG)
 
-debug:
-	docker run -t \
-    --name $(IMGNAME)_run \
-	--net $(NETWORK) \
-    -p 1812-1813:1812-1813/udp \
-    -e MYSQL_SERVER=$(MYSQL_SERVER) \
-	$(IMGNAME):$(IMGTAG) -X
+#debug:
+#	docker run -t \
+#    --name $(IMGNAME)_run \
+#	--net $(NETWORK) \
+#    -p 1812-1813:1812-1813/udp \
+#    -e MYSQL_SERVER=$(MYSQL_SERVER) \
+#	$(IMGNAME):$(IMGTAG) -X
 
 start:
 	@docker start $(IMGNAME)_run
