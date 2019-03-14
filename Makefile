@@ -10,6 +10,7 @@ MYSQL_DATABASE = radius
 
 all: build
 kill: stop delete
+killall: stopall deleteall
 
 build:
 	@docker build -t $(IMGNAME):$(IMGTAG) \
