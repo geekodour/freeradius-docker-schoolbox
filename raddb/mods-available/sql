@@ -21,9 +21,9 @@ sql {
 
 	# Connection info:
 	#
-    server = "mysql-sb"
+    server = "mysql-schoolbox_run"
     port = 3306
-	login = "radius"
+	login = "root"
 	password = "password"
 
 	# Database table configuration for everything except Oracle
