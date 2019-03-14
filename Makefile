@@ -1,6 +1,6 @@
 IMGNAME = freeradius-schoolbox
 IMGTAG = latest
-NETWORK = host
+NETWORK = bridge
 MYSQL_PORT = 3306
 MYSQL_SERVER := $(shell docker inspect --format '{{ .NetworkSettings.IPAddress }}' mysql-schoolbox_run)
 MYSQL_USERNAME = root
@@ -23,12 +23,14 @@ run:
 	docker run -t -d\
     --name $(IMGNAME)_run \
 	--net $(NETWORK) \
+    -p 1812-1813:1812-1813/udp \
 	$(IMGNAME):$(IMGTAG)
 
 debug:
 	docker run -t \
     --name $(IMGNAME)_run \
 	--net $(NETWORK) \
+    -p 1812-1813:1812-1813/udp \
 	$(IMGNAME):$(IMGTAG) -X
 
 start:
